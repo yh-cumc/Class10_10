@@ -1,0 +1,184 @@
+---
+title: "Class_10_10"
+author: "Yongmei Huang"
+date: "10/10/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(rvest)
+library(httr)
+
+
+
+```
+
+```{r}
+url = "http://samhda.s3-us-gov-west-1.amazonaws.com/s3fs-public/field-uploads/2k15StateFiles/NSDUHsaeShortTermCHG2015.htm"
+drug_use_xml = read_html(url)
+view(drug_use_xml)
+
+drug_use_xml %>%
+  html_nodes(css = "table") #15 tables#
+
+table_marj = 
+  (drug_use_xml %>% html_nodes(css = "table")) %>% 
+  .[[1]] %>%
+  html_table() 
+
+#First table#
+table_marj = 
+  (drug_use_xml %>% html_nodes(css = "table")) %>% 
+  .[[1]] %>%
+  html_table() %>%
+  slice(-1) %>% 
+  as_tibble()
+
+table_marj
+
+
+#Second Table#
+table_2 = 
+  (drug_use_xml %>% html_nodes(css = "table")) %>% 
+  .[[2]] %>%
+  html_table() %>%
+  slice(-1) %>% 
+  as_tibble()
+
+table_2
+
+```
+
+
+Harry Potter Movies
+
+```{r }
+knitr::opts_chunk$set(echo = TRUE)
+
+hpsaga_html = 
+  read_html("https://www.imdb.com/list/ls000630791/")
+
+
+title_vec = 
+  hpsaga_html %>%
+  html_nodes(".lister-item-header a") %>%    #got info from selector 
+  html_text()
+
+gross_rev_vec = 
+  hpsaga_html %>%
+  html_nodes(".text-small:nth-child(7) span:nth-child(5)") %>%
+  html_text()
+
+runtime_vec = 
+  hpsaga_html %>%
+  html_nodes(".runtime") %>%
+  html_text()
+
+hpsaga_df = 
+  tibble(
+    title = title_vec,
+    rev = gross_rev_vec,
+    runtime = runtime_vec)
+ view(hpsaga_df)
+ 
+
+```
+
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+
+movie_saga_html = 
+  read_html("https://www.amazon.com/product-reviews/B00005JNBQ/ref=cm_cr_arp_d_viewopt_rvwer?ie=UTF8&reviewerType=avp_only_reviews&sortBy=recent&pageNumber=1")
+
+
+#talk to Jason on the selector bandget#
+ 
+
+```
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+
+movie_saga_html = 
+  read_html("https://www.amazon.com/product-reviews/B00005JNBQ/ref=cm_cr_arp_d_viewopt_rvwer?ie=UTF8&reviewerType=avp_only_reviews&sortBy=recent&pageNumber=1")
+
+
+#talk to Jason on the selector bandget#
+ 
+
+```
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+
+movie_saga_html = 
+  read_html("https://www.amazon.com/product-reviews/B00005JNBQ/ref=cm_cr_arp_d_viewopt_rvwer?ie=UTF8&reviewerType=avp_only_reviews&sortBy=recent&pageNumber=1")
+
+
+#talk to Jason on the selector bandget#
+ 
+
+```
+
+New York City Water
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+
+nyc_water_0 = 
+  GET("https://data.cityofnewyork.us/resource/waf7-5gvc.csv") %>% 
+  content("parsed")
+
+
+nyc_water = 
+  GET("https://data.cityofnewyork.us/resource/waf7-5gvc.json") %>% 
+  content("text") %>%
+  jsonlite::fromJSON() %>%
+  as_tibble()
+
+
+```
+
+Get another online database
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+
+brfss_smart2010 = 
+  GET("https://data.cdc.gov/api/views/acme-vg9e/rows.csv?accessType=DOWNLOAD") %>% 
+  content("parsed")
+
+head(brfss_smart2010, 20)
+
+```
+
+
+
+```{r }
+
+poke = 
+  GET("http://pokeapi.co/api/v2/pokemon/1") %>%
+  content()
+
+poke$name
+poke$height
+poke$abilities
+
+
+```
+
+
+
+
+
+```
+
+
+
+```
+
+
